@@ -1,0 +1,46 @@
+Melyik az a 5 legjobbra értékelt film az IMDb szerint?             MONGO
+csak a filmek címe és az értékelés jelenjen meg!
+
+db.sample_mflix.find({"title"}, {"imdb"}).sort({imdb}).limit(5)
+
+
+
+
+Kérdezzük le, hogy évente hány film készült!                       MONGO
+Szűrjünk azon évekre, ahol a darabszám 5 feletti!
+
+db.sample_mflix.aggregate([
+{"$group": {_id:"$year"}},
+{"$match":{total:{$gt: 5}}}
+])
+
+
+
+Listázzuk ki azoknak a színészeknek a nevét és a filmjeik számát, akik legalább 2 filmben játszottak   NODE4J
+
+rendezzük a listát a filmek száma szerint növekvően
+csak az első 5 találat jelenjen meg
+
+MATCH (p:Person)-[:ACTED_IN]->(m:Movie)
+RETURN p.name, size(collect(m.title)) as db
+ORDER BY db, p.name
+WHERE db >= 2
+LIMIT 5
+
+
+
+
+
+
+Mely filmekben játszott Tom Hanks?                                                   NODE4J
+
+A filmek címe mellett a rendezők neve is jelenjen meg a listában!
+
+MATCH(p:Person {name: 'Tom Hanks'})-[rel:Acted_in]->(m:Movie)<-[rel:DIRECTED]-(d:Person)
+RETURN m.title, d.name
+
+
+
+
+
+
