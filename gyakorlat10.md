@@ -77,7 +77,7 @@ zcount szemelyek 16 18
 a. A parancsot adja meg válaszként!
 
 ```js
-
+scan match *a*
 ```
 
 9.\ A redis-cli-ben rendezzuk a korabban letrehozott sorted set-et pontszam szerint fordított sorrendbe!
@@ -85,7 +85,7 @@ a. A parancsot adja meg válaszként!
 a. A szükséges utasítást adja meg válaszként!
 
 ```js
-ZREVRANGE szemelyek 0 -1 WITHSCORES
+zrevrange szemelyek 0 -1 WITHSCORES
 ```
 
 10.\ A redis-cli-ben a korábban létrehozott szemelyek sorted set-ben növeljük Juli életkorát 10 évvel, majd ismét listázzuk a szemelyek sorted set elemeit!
@@ -93,6 +93,8 @@ ZREVRANGE szemelyek 0 -1 WITHSCORES
 a. A szükséges utasításokat (két utasítás) adjuk meg válaszként!
 
 ```js
+zincrby szemelyek 10 Juli
+zrange szemelyek 0 -1
 
 ```
 
@@ -103,7 +105,8 @@ b. Töröljük az auto kulcsot
 c. A szükséges 2 utasítást adjuk meg válaszként!
 
 ```js
-
+rename numbers1 numbers01
+del auto
 ```
 
 12.\ Hozza létre mezőnként és soronként külön kulcsok segítségével a dolgozo tábla következő rekordjait:
