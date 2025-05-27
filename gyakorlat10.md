@@ -118,7 +118,13 @@ Kiss Ilona   konyvelo                2
 a. A szükséges utasításokat tartalmazó képernyőrészt adja meg válaszként kép formájában!
 
 ```js
+set dolgozo:1:nev "Nagy Eva"
+set dolgozo:1:munkakor "titkarno"
+set dolgozo:1:kod 1
 
+set dolgozo:1:nev "Kiss Ilona"
+set dolgozo:1:munkakor "konyvelo"
+set dolgozo:1:kod 2
 ```
 
 13.\ A redis-cli-ben hozzuk létre a projekt táblának megfelelő adatszerkezetet soronként és mezőnként külön kulcsokkal! A kulcsok megadásánál ügyeljünk a projekt és a dolgozo tábla közötti kapcsolatra!
@@ -130,7 +136,11 @@ projektkod    projektnev     dolgozokod
 a. A szükséges utasításokat adjuk meg válaszként kép formájában!
 
 ```js
+set projekt:1:projektnev "EURO-33"
+set projekt:1:dolgozokod 1
 
+set projekt:3:projektnev "TRANS-22"
+set projekt:3:dolgozokod 2
 ```
 
 14.\ A redis-cli-ben hozzuk létre a dolgozo tábla (ld. 12-es feladat) nev oszlopának megfelelő adatszerkezetet dolgozo_nev néven!
@@ -138,7 +148,7 @@ a. A szükséges utasításokat adjuk meg válaszként kép formájában!
 a. A szükséges utasítást adja meg válaszként!
 
 ```js
-
+rpush dolgozonev "Nagy Éva" "Kiss Ilona"
 ```
 
 15.\ A redis-cli-ben listázza a létező kulcsok számát a dbsize utasítás segítségével!
@@ -146,5 +156,5 @@ a. A szükséges utasítást adja meg válaszként!
 a. Az utasítást másolja be a válaszhoz!
 
 ```js
-
+dbsize
 ```
