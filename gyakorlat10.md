@@ -67,7 +67,8 @@ a. Kérdezzük le a 16-18 pontszámok közötti személyek számát!
 b. A sorted set-et létrehozó és a lekérdező utasításokat (két utasítás) adjuk meg válaszként!
 
 ```js
-
+zadd 15 Andras 20 Peter 18 Juli
+zcount szemelyek 16 18
 ```
 
 
@@ -84,7 +85,7 @@ a. A parancsot adja meg válaszként!
 a. A szükséges utasítást adja meg válaszként!
 
 ```js
-
+ZREVRANGE szemelyek 0 -1 WITHSCORES
 ```
 
 10.\ A redis-cli-ben a korábban létrehozott szemelyek sorted set-ben növeljük Juli életkorát 10 évvel, majd ismét listázzuk a szemelyek sorted set elemeit!
