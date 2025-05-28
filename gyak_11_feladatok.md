@@ -36,7 +36,7 @@ b. Töltsük be a Movies and TV Shows dataset-et:
 a.Kérdezzük le a rendszer verzióját (show version;), és az eredménysort adjuk meg a válaszhoz!
 
 ```js
-
+show version;
 ```
 
 4. A DataStax Astra CQL konzolon kérdezzük le, hogy a movies keyspace movies_and_tv táblájának hány sora van!
@@ -44,7 +44,8 @@ a.Kérdezzük le a rendszer verzióját (show version;), és az eredménysort ad
 a. A lekérdező utasítást adjuk meg válaszként!
 
 ```js
-
+select count(*)
+from movies_and_tv;
 ```
 
 
@@ -55,7 +56,10 @@ a. A szükséges csak az első 3 találatot jelenítse meg
 b. A lekérdezést adjuk meg válaszként!
 
 ```js
-
+select title
+from movies_and_tv
+where type = 'Movie' AND release_year = 2018
+limit 3;
 ```
 
 6. A DataStax Astra CQL konzolon kérdezzük le, hogy a movies_and_tv táblában típusonként, azon belül évenként hány rekord van!
@@ -63,7 +67,9 @@ b. A lekérdezést adjuk meg válaszként!
 a. A lekérdezést adjuk meg válaszként!
 
 ```js
-
+select type, release_year, count(*)
+from movies_and_tv
+group by type, release_year;
 ```
 
 7. Telepítsük fel saját gépünkre a Cassandra-t, majd a CQL Shell-ben hozzunk létre új keyspace-t kps néven!
@@ -90,7 +96,12 @@ b. A partition key legyen: (nev, szulev), a clustered key pedig foglalkozas
 c. A táblát létrehozó parancsot adjuk meg válaszként!
 
 ```js
-
+create table Szemely(
+   nev TEXT,
+   szulev INT,
+   foglalkozas TEXT,
+   PRIMARY KEY ((nev, szulev), fogalkozas)
+);
 ```
 
 9. A Cassandra CQL Shell-ben az előző feladatban létrehozott Szemely táblába rögzítsen 3 új rekordot:
@@ -103,7 +114,10 @@ Toth Otto     1980       pincer
 a. A rögzítés után listázza a Szemely tábla tartalmát, az utasításokat adja meg válaszként!
 
 ```js
-
+insert into Szemely values ('Kiss Bela', 2000, 'lakatos');
+insert into Szemely values ('Nagy Ivo', 1999, 'diak');
+insert into Szemely values ('Toth Otto', 1980, 'pincer');
+select * from Szemely;
 ```
 
 10. A Cassandra CQL Shell-ben készítsen indexet a Szemely táblához a foglalkozas oszlop alapján!
@@ -113,7 +127,8 @@ a. Az index neve legyen i_foglalkozas
 b. A szükséges parancsot adja meg válaszként!
 
 ```js
-
+create index i_foglalkozas
+on Szemely(foglalkozas);
 ```
 
 11. A Cassandra CQL Shell-ben kérdezze le azokat a személyeket, akiknek foglalkozása pincer vagy lakatos!
@@ -126,7 +141,9 @@ b. A szükséges lekérdezést adja meg válaszként!
 c. A lekérdezést adja meg válaszként!
 
 ```js
-
+select nev
+from Szemely
+where foglalkozas IN ('pincer', 'lakatos');
 ```
 
 12. A Cassandra CQL Shell-ben bővítse a Személy táblát egy új mezővel
@@ -139,7 +156,12 @@ b. Kiss Bela végzettsegei legyenek 'gepesz' és 'muszeresz'
 c Az új mezőt létrehozó, és a végzettségeket megadó parancsokat (2 db) adja meg válaszként!
 
 ```js
+ALTER TABLE Szemely
+ADD Vegzettseg LIST<TEXT>;
 
+UPDATE Szemely
+SET Vegzettseg = Vegzettseg + ['gepesz', 'muszeresz']
+WHERE nev = 'Kiss Bela' AND szulev = 2000 AND foglalkozas = 'lakatos';
 ```
 
 13. A Cassandra CQL Shell-ben bővítsük a Szemely táblát egy új mezővel!
@@ -151,7 +173,12 @@ b. Nagy Ivo nyelvtudása legyen: 'angol' és 'francia'
 c. A szükséges parancsokat (2 db) adjuk meg válaszként!
 
 ```js
+ALTER TABLE Szemely
+ADD Nyelvtudas SET<TEXT>;
 
+UPDATE Szemely
+SET Nyelvtudas = Nyelvtudas + {'angol', 'francia'}
+WHERE nev = 'Nagy Ivo' AND szulev = 1999 AND foglalkozas = 'diak';
 ```
 
 14. A Cassandra CQL Shell-ben adjon hozzá még egy új oszlopot a Szemely táblához!
@@ -163,7 +190,12 @@ b. Rögzítsük, hogy Kiss Bela esetén az Autok mező értéke: {'Skoda Fabia':
 c. A szükséges utasításokat (2 db) adjuk meg válaszként!
 
 ```js
+ALTER TABLE Szemely
+ADD Autok MAP<TEXT, TEXT>;
 
+UPDATE Szemely
+SET Autok['Skoda Fabia'] = 'abc-111', Autok['Audi A4'] = 'xyz-222'
+WHERE nev = 'Kiss Bela' AND szulev = 2000 AND foglalkozas = 'lakatos';
 ```
 
 15. A Cassandra CQL Shell-ben módosítsuk a Szemely tábla következő adatait:
@@ -176,7 +208,13 @@ c. A szükséges 2 utasítást adjuk meg válaszként!
 
 
 ```js
+UPDATE Szemely
+SET Nyelvtudas = Nyelvtudas + {'német'}
+WHERE nev = 'Nagy Ivo' AND szulev = 1999 AND foglalkozas = 'diak';
 
+UPDATE Szemely
+SET Vegzettseg = Vegzettseg + ['barmixer']
+WHERE nev = 'Toth Otto' AND szulev = 1980 AND foglalkozas = 'pincer';
 ```
 
 
